@@ -1,0 +1,39 @@
+{
+    "variables": {
+      "aws_access_key": "",
+      "aws_secret_key": ""
+    },
+    
+    "builders": [
+          {
+              "type": "amazon-ebs",
+              "instance_type": "t2.micro",
+              "region": "us-east-1",
+              "source_ami": "ami-0947d2ba12ee1ff75",
+              "ssh_username": "ec2-user",
+              "ami_name": "Prometheus Node"
+          }
+    ],
+
+    "provisioners": [
+      {
+        "type": "shell",
+        "script": "favour.sh"
+      },
+
+      {
+        "type": "file",
+        "source": "crossovertest",
+        "destination": "~/"
+      },
+
+      {
+        "type": "shell",
+        "inline": [
+          "chmod 400 ~/crossovertest.pem",
+          "cat ~/crossovertest.pem >> ~/.ssh/authorized_keys"
+        ]
+      }
+    ]
+}
+  
